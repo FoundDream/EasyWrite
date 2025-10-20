@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 
 interface Settings {
   apiProvider: "mymemory" | "custom";
@@ -29,27 +28,18 @@ function App() {
   };
 
   return (
-    <div className="popup-container">
-      <div className="header">
-        <h1>✍️ 写作助手</h1>
-        <p className="subtitle">让你的中文写作轻松变成优质英文</p>
+    <div className="w-276px px-5 py-4">
+      <div className="text-center text-black text-2xl font-bold">
+        <h1>EasyWriter</h1>
       </div>
 
-      <div className="content">
+      <div className="bg-white rounded-lg mt-[-8px] p-5">
         <div className="section">
-          <h2>🎯 使用说明</h2>
-          <ul className="instructions">
-            <li>在GitHub的Issue或PR页面打开文本框</li>
-            <li>输入中文内容</li>
-            <li>点击"🌐 中文转英文"按钮</li>
-            <li>内容将自动翻译并替换</li>
-          </ul>
-        </div>
-
-        <div className="section">
-          <h2>⚙️ 翻译设置</h2>
-          <div className="form-group">
-            <label>
+          <h2 className="text-base font-bold text-[#1f2937] mb-3">
+            ⚙️ 翻译设置
+          </h2>
+          <div className="mb-3">
+            <label className="flex items-center gap-2 text-sm text-[#374151] cursor-pointer p-2 rounded-md transition-all duration-200">
               <input
                 type="radio"
                 name="apiProvider"
@@ -66,8 +56,8 @@ function App() {
             </label>
           </div>
 
-          <div className="form-group">
-            <label>
+          <div className="mb-3">
+            <label className="flex items-center gap-2 text-sm text-[#374151] cursor-pointer p-2 rounded-md transition-all duration-200">
               <input
                 type="radio"
                 name="apiProvider"
@@ -86,12 +76,17 @@ function App() {
 
           {settings.apiProvider === "custom" && (
             <div className="custom-api-settings">
-              <div className="form-group">
-                <label htmlFor="apiUrl">API地址：</label>
+              <div className="mb-3">
+                <label
+                  htmlFor="apiUrl"
+                  className="block text-sm text-[#374151] mb-1"
+                >
+                  API地址：
+                </label>
                 <input
                   type="text"
                   id="apiUrl"
-                  className="input-field"
+                  className="w-full p-2 border border-[#d1d5db] rounded-md text-sm text-[#6b7280] focus:outline-none focus:border-[#667eea] focus:ring-1 focus:ring-[#667eea]/20"
                   placeholder="https://api.openai.com/v1/chat/completions"
                   value={settings.customApiUrl || ""}
                   onChange={(e) =>
@@ -100,12 +95,17 @@ function App() {
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="apiKey">API密钥：</label>
+              <div className="mb-3">
+                <label
+                  htmlFor="apiKey"
+                  className="block text-sm text-[#374151] mb-1"
+                >
+                  API密钥：
+                </label>
                 <input
                   type="password"
                   id="apiKey"
-                  className="input-field"
+                  className="w-full p-2 border border-[#d1d5db] rounded-md text-sm text-[#6b7280] focus:outline-none focus:border-[#667eea] focus:ring-1 focus:ring-[#667eea]/20"
                   placeholder="sk-..."
                   value={settings.customApiKey || ""}
                   onChange={(e) =>
@@ -117,23 +117,14 @@ function App() {
           )}
 
           <button
-            className={`save-btn ${saved ? "saved" : ""}`}
+            className={`w-full py-2 bg-[#667eea] text-white rounded-md text-sm font-medium cursor-pointer transition-all duration-200 hover:bg-[#5363e6] ${
+              saved ? "opacity-100" : "opacity-50"
+            }`}
             onClick={handleSave}
           >
             {saved ? "✓ 已保存" : "保存设置"}
           </button>
         </div>
-
-        <div className="section">
-          <h2>💡 提示</h2>
-          <p className="tip">
-            未来版本将支持更多AI服务和上下文收集功能，敬请期待！
-          </p>
-        </div>
-      </div>
-
-      <div className="footer">
-        <p>Made with ❤️ for better writing</p>
       </div>
     </div>
   );
