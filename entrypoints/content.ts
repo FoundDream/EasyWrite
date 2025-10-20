@@ -2,11 +2,7 @@ export default defineContentScript({
   matches: ["*://github.com/*"],
 
   main() {
-    console.log("✅ 写作助手：Content script 已加载");
-    console.log("✅ 当前页面URL:", window.location.href);
-
-    // 注入样式
-    injectStyles();
+    console.log("当前页面URL:", window.location.href);
 
     // 延迟执行，确保页面DOM加载完成
     setTimeout(() => {
@@ -16,211 +12,22 @@ export default defineContentScript({
   },
 });
 
-// 注入麦金塔风格样式
-function injectStyles() {
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes macFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-8px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes macPulse {
-      0%, 100% {
-        box-shadow: 0 4px 20px rgba(0, 122, 255, 0.25),
-                    0 1px 3px rgba(0, 0, 0, 0.1),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      }
-      50% {
-        box-shadow: 0 6px 25px rgba(0, 122, 255, 0.35),
-                    0 2px 5px rgba(0, 0, 0, 0.15),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      }
-    }
-
-    .mac-tooltip {
-      position: absolute;
-      z-index: 10000;
-      animation: macFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      pointer-events: auto;
-    }
-
-    .mac-tooltip-content {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-radius: 12px;
-      padding: 6px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
-                  0 1px 3px rgba(0, 0, 0, 0.06),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      border: 0.5px solid rgba(255, 255, 255, 0.8);
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .mac-tooltip-btn {
-      background: linear-gradient(180deg, #007AFF 0%, #0051D5 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-      letter-spacing: -0.01em;
-      box-shadow: 0 1px 3px rgba(0, 122, 255, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .mac-tooltip-btn:hover {
-      background: linear-gradient(180deg, #0071E3 0%, #0040B8 100%);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    }
-
-    .mac-tooltip-btn:active {
-      transform: translateY(0);
-      box-shadow: 0 1px 3px rgba(0, 122, 255, 0.3),
-                  inset 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .mac-tooltip-btn:disabled {
-      background: linear-gradient(180deg, #A0A0A0 0%, #888888 100%);
-      cursor: not-allowed;
-      animation: macPulse 1.5s ease-in-out infinite;
-    }
-
-    .mac-tooltip-arrow {
-      position: absolute;
-      bottom: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 6px;
-      overflow: hidden;
-    }
-
-    .mac-tooltip-arrow::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-      width: 10px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-right: 0.5px solid rgba(255, 255, 255, 0.8);
-      border-bottom: 0.5px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .mac-tooltip-content {
-        background: rgba(50, 50, 55, 0.95);
-        border: 0.5px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
-                    0 1px 3px rgba(0, 0, 0, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      }
-
-      .mac-tooltip-arrow::before {
-        background: rgba(50, 50, 55, 0.95);
-        border-right: 0.5px solid rgba(255, 255, 255, 0.1);
-        border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-      }
-    }
-
-    .mac-notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10001;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      border-radius: 12px;
-      padding: 14px 18px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
-                  0 2px 8px rgba(0, 0, 0, 0.08),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.8);
-      border: 0.5px solid rgba(255, 255, 255, 0.8);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      color: #1d1d1f;
-      animation: macFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: -0.01em;
-      min-width: 200px;
-    }
-
-    .mac-notification.success {
-      color: #1d1d1f;
-    }
-
-    .mac-notification.error {
-      color: #ff3b30;
-    }
-
-    .mac-notification.warning {
-      color: #ff9500;
-    }
-
-    .mac-notification-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .mac-notification {
-        background: rgba(50, 50, 55, 0.95);
-        border: 0.5px solid rgba(255, 255, 255, 0.1);
-        color: #f5f5f7;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
-                    0 2px 8px rgba(0, 0, 0, 0.3),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      }
-
-      .mac-notification.error {
-        color: #ff453a;
-      }
-
-      .mac-notification.warning {
-        color: #ffd60a;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-  console.log("✅ 麦金塔风格样式已注入");
-}
-
 // 全局变量
 let currentTooltip: HTMLElement | null = null;
 let currentTextarea: HTMLTextAreaElement | null = null;
 let selectionRange: { start: number; end: number } | null = null;
+let lastMouseX: number = 0;
+let lastMouseY: number = 0;
 
 // 初始化文本选中监听
 function initTextSelectionListener() {
-  // 监听所有 textarea 的选中事件
+  // 记录鼠标位置
+  document.addEventListener("mousemove", (e) => {
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+  });
+
+  // 监听所有 textarea/input 的选中事件
   document.addEventListener("mouseup", handleTextSelection);
   document.addEventListener("keyup", handleTextSelection);
 
@@ -244,7 +51,7 @@ function handleTextSelection(e: Event) {
   const target = e.target as HTMLElement;
 
   // 只处理 GitHub 的 textarea
-  if (target.tagName !== "TEXTAREA") {
+  if (target.tagName !== "TEXTAREA" && target.tagName !== "INPUT") {
     return;
   }
 
@@ -279,17 +86,47 @@ function showTooltip(textarea: HTMLTextAreaElement, selectedText: string) {
 
   console.log("✨ 显示翻译工具条");
 
-  // 创建 tooltip
+  // 创建 tooltip 容器
   const tooltip = document.createElement("div");
-  tooltip.className = "mac-tooltip";
+  tooltip.style.cssText = `
+    position: fixed;
+    z-index: 9999;
+    pointer-events: auto;
+  `;
 
+  // 创建内容容器（使用内联样式，不依赖 Tailwind）
   const content = document.createElement("div");
-  content.className = "mac-tooltip-content";
+  content.style.cssText = `
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  `;
 
+  // 创建按钮
   const button = document.createElement("button");
-  button.className = "mac-tooltip-btn";
+  button.style.cssText = `
+    background: linear-gradient(180deg, #007AFF 0%, #0051D5 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    transition: all 0.2s;
+  `;
+
   button.innerHTML = `
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
       <path d="M7 1.5C3.96 1.5 1.5 3.96 1.5 7C1.5 10.04 3.96 12.5 7 12.5C10.04 12.5 12.5 10.04 12.5 7C12.5 3.96 10.04 1.5 7 1.5ZM7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11Z" fill="white" fill-opacity="0.9"/>
       <path d="M6.5 4.5H7.5V7.5H6.5V4.5Z" fill="white"/>
       <path d="M6.5 8.5H7.5V9.5H6.5V8.5Z" fill="white"/>
@@ -304,11 +141,6 @@ function showTooltip(textarea: HTMLTextAreaElement, selectedText: string) {
   content.appendChild(button);
   tooltip.appendChild(content);
 
-  // 添加箭头
-  const arrow = document.createElement("div");
-  arrow.className = "mac-tooltip-arrow";
-  tooltip.appendChild(arrow);
-
   document.body.appendChild(tooltip);
   currentTooltip = tooltip;
 
@@ -319,28 +151,93 @@ function showTooltip(textarea: HTMLTextAreaElement, selectedText: string) {
 // 定位 tooltip
 function positionTooltip(tooltip: HTMLElement, textarea: HTMLTextAreaElement) {
   const rect = textarea.getBoundingClientRect();
-  const tooltipRect = tooltip.getBoundingClientRect();
 
-  // 计算选中文本的大概位置（在 textarea 上方居中）
-  let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-  let top = rect.top - tooltipRect.height - 12;
+  // 先让 tooltip 渲染，获取其实际尺寸
+  requestAnimationFrame(() => {
+    const tooltipRect = tooltip.getBoundingClientRect();
 
-  // 确保不超出视口
-  const padding = 10;
-  left = Math.max(
-    padding,
-    Math.min(left, window.innerWidth - tooltipRect.width - padding)
-  );
-  top = Math.max(padding, top);
+    // 获取选中区域的起始和结束位置
+    const startPos = Math.min(textarea.selectionStart, textarea.selectionEnd);
+    const endPos = Math.max(textarea.selectionStart, textarea.selectionEnd);
 
-  // 如果上方空间不够，显示在下方
-  if (top < padding) {
-    top = rect.bottom + 12;
-    // 箭头翻转（可选）
-  }
+    // 获取起始和结束位置的坐标
+    const startCoords = getCaretCoordinates(textarea, startPos);
+    const endCoords = getCaretCoordinates(textarea, endPos);
 
-  tooltip.style.left = `${left + window.scrollX}px`;
-  tooltip.style.top = `${top + window.scrollY}px`;
+    // 判断选择方向：通过比较鼠标位置和起始/结束坐标来判断
+    // 如果鼠标更靠近结束位置，说明是从左到右选择；反之从右到左
+    const startX = rect.left + startCoords.left;
+    const endX = rect.left + endCoords.left;
+    const distToStart = Math.abs(lastMouseX - startX);
+    const distToEnd = Math.abs(lastMouseX - endX);
+
+    // 选择鼠标更靠近的那一端作为光标位置
+    const isLeftToRight = distToEnd < distToStart;
+    const cursorPosition = isLeftToRight ? endCoords : startCoords;
+
+    console.log(`🎯 选择方向: ${isLeftToRight ? "从左到右" : "从右到左"}`);
+
+    // 计算 tooltip 位置：光标右侧
+    let left = rect.left + cursorPosition.left + 8; // 光标右侧 8px
+    let top = rect.top + cursorPosition.top - tooltipRect.height / 2; // 垂直居中对齐光标
+
+    // 确保不超出视口
+    const padding = 10;
+
+    // 水平方向：如果右侧空间不够，显示在光标左侧
+    if (left + tooltipRect.width + padding > window.innerWidth) {
+      left = rect.left + cursorPosition.left - tooltipRect.width - 8;
+    }
+
+    // 如果左侧也不够，至少保证不超出屏幕
+    left = Math.max(
+      padding,
+      Math.min(left, window.innerWidth - tooltipRect.width - padding)
+    );
+
+    // 垂直方向：确保不超出视口
+    top = Math.max(
+      padding,
+      Math.min(top, window.innerHeight - tooltipRect.height - padding)
+    );
+
+    // 设置最终位置
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+
+    console.log(`📍 工具条位置: left=${left}px, top=${top}px (光标位置)`);
+  });
+}
+
+// 获取光标在 textarea 中的坐标位置
+function getCaretCoordinates(element: HTMLTextAreaElement, position: number) {
+  // 创建一个镜像 div 来计算位置
+  const div = document.createElement("div");
+  const style = getComputedStyle(element);
+
+  div.style.position = "absolute";
+  div.style.visibility = "hidden";
+  div.style.whiteSpace = "pre-wrap";
+
+  // 添加文本内容
+  const textContent = element.value.substring(0, position);
+  div.textContent = textContent;
+
+  // 创建一个 span 来标记光标位置
+  const span = document.createElement("span");
+  span.textContent = element.value.substring(position) || ".";
+  div.appendChild(span);
+
+  document.body.appendChild(div);
+
+  const coordinates = {
+    top: span.offsetTop,
+    left: span.offsetLeft,
+  };
+
+  document.body.removeChild(div);
+
+  return coordinates;
 }
 
 // 隐藏 tooltip
@@ -358,9 +255,7 @@ async function handleTranslate(text: string) {
   console.log("🌐 开始翻译:", text);
 
   // 更新按钮状态
-  const button = currentTooltip?.querySelector(
-    ".mac-tooltip-btn"
-  ) as HTMLButtonElement;
+  const button = currentTooltip?.querySelector("button") as HTMLButtonElement;
   if (button) {
     button.disabled = true;
     button.innerHTML = `
@@ -396,7 +291,6 @@ async function handleTranslate(text: string) {
       textarea.setSelectionRange(newEnd, newEnd);
       textarea.focus();
 
-      showNotification("翻译完成！", "success");
       hideTooltip();
       console.log("✅ 翻译成功");
     } else {
@@ -404,7 +298,6 @@ async function handleTranslate(text: string) {
     }
   } catch (error) {
     console.error("❌ 翻译错误:", error);
-    showNotification("翻译失败，请重试", "error");
 
     // 恢复按钮状态
     if (button) {
@@ -419,32 +312,4 @@ async function handleTranslate(text: string) {
       `;
     }
   }
-}
-
-// 显示通知
-function showNotification(
-  message: string,
-  type: "success" | "error" | "warning" = "success"
-) {
-  const notification = document.createElement("div");
-  notification.className = `mac-notification ${type}`;
-
-  const icons = {
-    success: "✓",
-    error: "✕",
-    warning: "⚠",
-  };
-
-  notification.innerHTML = `
-    <span class="mac-notification-icon">${icons[type]}</span>
-    <span>${message}</span>
-  `;
-
-  document.body.appendChild(notification);
-
-  setTimeout(() => {
-    notification.style.animation =
-      "macFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) reverse";
-    setTimeout(() => notification.remove(), 200);
-  }, 3000);
 }
