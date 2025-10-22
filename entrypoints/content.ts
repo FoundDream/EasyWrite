@@ -101,19 +101,14 @@ function showTooltip(textarea: HTMLTextAreaElement, selectedText: string) {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-radius: 8px;
-    padding: 4px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.08);
   `;
 
   // 创建按钮
   const button = document.createElement("button");
   button.style.cssText = `
-    background: linear-gradient(180deg, #007AFF 0%, #0051D5 100%);
     color: white;
     border: none;
     border-radius: 6px;
-    padding: 6px 12px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
@@ -121,17 +116,11 @@ function showTooltip(textarea: HTMLTextAreaElement, selectedText: string) {
     align-items: center;
     gap: 6px;
     white-space: nowrap;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     transition: all 0.2s;
   `;
 
   button.innerHTML = `
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path d="M7 1.5C3.96 1.5 1.5 3.96 1.5 7C1.5 10.04 3.96 12.5 7 12.5C10.04 12.5 12.5 10.04 12.5 7C12.5 3.96 10.04 1.5 7 1.5ZM7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11Z" fill="white" fill-opacity="0.9"/>
-      <path d="M6.5 4.5H7.5V7.5H6.5V4.5Z" fill="white"/>
-      <path d="M6.5 8.5H7.5V9.5H6.5V8.5Z" fill="white"/>
-    </svg>
-    <span>翻译为英文</span>
+    🌍
   `;
 
   button.addEventListener("click", async () => {
@@ -303,12 +292,7 @@ async function handleTranslate(text: string) {
     if (button) {
       button.disabled = false;
       button.innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7 1.5C3.96 1.5 1.5 3.96 1.5 7C1.5 10.04 3.96 12.5 7 12.5C10.04 12.5 12.5 10.04 12.5 7C12.5 3.96 10.04 1.5 7 1.5ZM7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11Z" fill="white" fill-opacity="0.9"/>
-          <path d="M6.5 4.5H7.5V7.5H6.5V4.5Z" fill="white"/>
-          <path d="M6.5 8.5H7.5V9.5H6.5V8.5Z" fill="white"/>
-        </svg>
-        <span>翻译为英文</span>
+        🌍
       `;
     }
   }
